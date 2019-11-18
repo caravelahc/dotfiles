@@ -35,25 +35,50 @@ backup() {
 }
 
 
+make-link() {
+    local target="${1}"
+    local source="${2}"
+
+    ln -sf "$(pwd)/${target}" "${source}"
+}
+
+
 install-i3-configs() {
-    echo "== Installing i3 configs..."
     backup i3 ~/.i3 ~/.config/i3
-    ln -sf $(pwd)/i3 ~/.config/
-    echo "-- Done installing i3 configs."
+    make-link i3 ~/.config
 }
 
 
 install-conky-configs() {
-    echo "== Installing Conky configs..."
     backup ./ ~/.config/conky
-    ln -sf $(pwd)/conky ~/.config/
-    echo "-- Done installing conky configs."
+    make-link conky ~/.config
+}
+
+
+install-home-configs() {
+    backup home ~/.profile
+    make-link home/profile ~/.profile
 }
 
 
 install-all-configs() {
+    local configs="conky home i3"
     echo "-- Installing All configs..."
+    for config in ${configs}
+    do
+        install-config "${config}"
+    done
     echo "-- All configs installed."
+}
+
+
+install-config() {
+    local config="${1}"
+    shift 1
+
+    echo "== Installing ${1} configs..."
+    install-${config}-configs $*
+    echo "-- Done installing ${1} configs."
 }
 
 
@@ -62,15 +87,15 @@ main() {
 
     if [[ -z ${configs} ]]
     then
-        configs="i3 conky"
+        install-all-configs
+    else
+        echo "Installing configs: [${configs/ /, }]"
+        for config in ${configs}
+        do
+            install-config ${config} $*
+        done
+        echo "Done."
     fi
-
-    echo "Installing configs..."
-    for config in ${configs}
-    do
-        install-${config}-configs $*
-    done
-    echo "Done."
 }
 
 
