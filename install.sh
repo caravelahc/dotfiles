@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
 
+# Backups files into "backup" directory.
+# Usage: backup <dir> <files...>
+# Args:
+#     dir    Where files will be moved to (prefixed by "backup").
+#     files  Which files will be backed up. Please notice the target will be
+#            their basename.
 backup() {
-    local dir="backups/$1"
+    local dir="backup/$1"
     shift 1
     local files="$*"
 
