@@ -11,10 +11,19 @@ backup() {
     for file in ${files}
     do
         basefile=$(basename ${file})
-        if [[ -f ${file} ]] && [[ ! -f "${dir}/${basefile}" ]]
+
+	if [[ -e "${dir}/${basefile}" ]]
+	then
+            echo " -- Backup already exists. Skipping. (\"${dir}/${basefile}\")"
+            continue
+	fi
+
+        if [[ -e ${file} ]]
         then
             echo "  - Backing up ${file}"
             mv "${file}" "${dir}/${basefile}"
+        else
+            echo "  - No ${file}. Skipping."
         fi
     done
 }
@@ -23,7 +32,7 @@ backup() {
 install-i3-configs() {
     echo "== Installing i3 configs..."
     backup i3 ~/.i3 ~/.config/i3
-    ln -sf i3 ~/.config/
+    ln -sf $(pwd)/i3 ~/.config/
     echo "-- Done installing i3 configs."
 }
 
@@ -31,7 +40,7 @@ install-i3-configs() {
 install-conky-configs() {
     echo "== Installing Conky configs..."
     backup ./ ~/.config/conky
-    ln -sf conky ~/.config/
+    ln -sf $(pwd)/conky ~/.config/
     echo "-- Done installing conky configs."
 }
 
