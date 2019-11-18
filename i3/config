@@ -54,10 +54,16 @@ bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
 bindsym $mod+F2 exec palemoon
 bindsym $mod+F3 exec pcmanfm
 bindsym $mod+F5 exec terminal -e 'mocp' # Media player
+
+# Print screen
 bindsym Print exec --no-startup-id i3-scrot
 bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
 bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
 bindsym $mod+Shift+h exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
+
+bindsym $mod+Shift+S exec --no-startup-id sshot -sc
+
+# X commands
 bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 
 # change focus
